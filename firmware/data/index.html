@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Settings - MorseOverIP</title>
+<style>
+body {
+    margin: 2px;
+}
+
+main {
+    font-family: Roboto, Helvetica, Sans-Serif;
+    max-width: 45em;
+    margin: 0 auto;
+}
+
+label {
+    display: block;
+    font-style: italic;
+    margin-top: 1em;
+}
+
+input {
+    margin-left: 1em;
+}
+
+input[type=submit] {
+    margin-left: 0;
+    margin-top: 2em;
+    display: block;
+}
+
+</style>
+    </head>
+    <body>
+
+        <main>
+        <h1>Settings</h1>
+
+        <p>Welcome to <em>MorseOverIP</em>. Configure the WiFi below and click "Reboot". The device will then restart trying to connect to the specified network. If it does not succeed, it will host an Ad-Hoc network again to allow you to correct your input.</p>
+
+        <form action="/submit" method="post">
+
+            <label for="wifi_ssid">WiFi SSID</label>
+            <input id="wifi_ssid" name="wifi_ssid" type="text" maxlength="126"/>
+
+            <label for="wifi_psk">WiFi Password</label>
+            <input id="wifi_psk" name="wifi_psk" type="password" maxlength="126"/>
+
+            <label for="freq">Beep Frequency (Hz)</label>
+            <input id="freq" name="freq" type="number" min="200" max="19000" value="1200"/>
+            <button onclick="javascript:preview_beep(event)">Preview</button>
+
+            <input type="submit" value="Reboot">
+
+
+        </form>
+
+        </main>
+
+<script>
+    function preview_beep(e) {
+        e.preventDefault();
+
+        const freq = document.querySelector("#freq").value;
+
+        var req = new XMLHttpRequest();
+        req.open("POST", "http://192.168.4.1/beep");
+        req.send(freq);
+    }
+</script>
+    </body>
+</html>
