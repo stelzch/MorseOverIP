@@ -7,11 +7,7 @@
 #include "storage.h"
 #include "frontend.h"
 #include "util.h"
-
-const char *mqtt_server = "";
-const char *mqtt_id = "";
-const char *mqtt_username = "";
-const char *mqtt_password = "";
+#include "secrets.h"
 
 bool speakerEnabled = false;
 int freq = 1200;
@@ -29,7 +25,7 @@ void reconnect() {
   while(!client.connected()) {
     Serial.println("Reconnection attempt...");
     
-    if (client.connect(mqtt_id, mqtt_username, mqtt_password)) {
+    if (client.connect(MQTT_ID, MQTT_USERNAME, MQTT_PASSWORD)) {
       Serial.println("Connection established");
 
       client.subscribe("morse/black/onoff");
@@ -80,7 +76,7 @@ void setup() {
     Serial.println("Connection to WiFi failed, spinning up AdHoc net...");
     webserver_setup();
   } else {
-    client.setServer(mqtt_server, 1883);
+    client.setServer(MQTT_SERVER, 1883);
     client.setCallback(callback);
     reconnect();
   }
